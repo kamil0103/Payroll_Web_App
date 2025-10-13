@@ -1,0 +1,113 @@
+/* src/pages/DashboardEmployer.css */
+
+/* Reset + Prevent layout breakage */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  overflow-x: hidden;
+}
+
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ✅ Centered header */
+.dashboard-header {
+  background-color: #1e1e2f;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+/* ✅ Center main content */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 6rem 2rem 2rem;
+  width: 100%;
+}
+
+/* ✅ Center container and make it a comfortable width */
+.dashboard-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}
+
+/* Employee List */
+.employee-list-title {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.employee-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.employee-item {
+  background-color: #f9f9f9;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Footer */
+.dashboard-footer {
+  background-color: #1e1e2f;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+/* 🔄 Responsive */
+@media (max-width: 768px) {
+  .dashboard-main {
+    padding: 3rem 1rem 1rem;
+  }
+
+  .dashboard-container {
+    padding: 1rem;
+    margin: 1rem auto;
+    width: 95%;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .dashboard-header {
+    text-align: center;
+  }
+}
