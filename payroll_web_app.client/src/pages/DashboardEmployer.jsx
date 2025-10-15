@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { getEmployees } from "../services/api";
 import EmployeeForm from "../components/EmployeeForm";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "./DashboardEmployer.css";
 
 export default function DashboardEmployer() {
@@ -21,9 +23,7 @@ export default function DashboardEmployer() {
 
   return (
     <div className="dashboard-layout">
-      <header className="dashboard-header">
-        <h1 className="header-title">Payroll Management</h1>
-      </header>
+      <Header />
 
       <main className="dashboard-main">
         <div className="dashboard-container">
@@ -39,9 +39,7 @@ export default function DashboardEmployer() {
         </div>
       </main>
 
-      <footer className="dashboard-footer">
-        <p>© 2025 Payroll System. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }
