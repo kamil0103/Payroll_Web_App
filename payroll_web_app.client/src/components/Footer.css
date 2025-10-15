@@ -1,0 +1,9 @@
+/* src/components/Footer.css */
+
+.shared-footer {
+  background-color: #1e1e2f;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
