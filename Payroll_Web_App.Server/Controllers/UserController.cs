@@ -27,7 +27,7 @@ namespace Payroll_Web_App.Server.Controllers
             {
                 connection.Open();
 
-                var cmd = new SqlCommand("SELECT * FROM UserProfile", connection);
+                var cmd = new SqlCommand("SELECT * FROM users", connection);
 
                 var reader = cmd.ExecuteReader();
 
