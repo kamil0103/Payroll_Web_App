@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./Payroll_Web_App.Server
+      dockerfile: Dockerfile
+    container_name: payroll_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=192.168.1.50,1433;Database=PayrollDB;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;
+    ports:
+      - "5000:8080"
+    networks:
+      - payroll_net
+
+  frontend:
+    build:
+      context: ./payroll_web_app.client
+      dockerfile: Dockerfile
+    container_name: payroll_client
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - payroll_net
+
+networks:
+  payroll_net:
