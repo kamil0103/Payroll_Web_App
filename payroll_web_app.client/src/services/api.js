@@ -1,5 +1,5 @@
 // services/api.js
-const API_BASE = "https://localhost:56644/Users"; // Adjust if your backend runs on a different port
+const API_BASE = import.meta.env.VITE_API_URL; // Adjust if your backend runs on a different port
 
 export const getEmployees = async () => {
     const response = await fetch(`${API_BASE}/getusers`);
