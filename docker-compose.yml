@@ -8,7 +8,7 @@ services:
     container_name: payroll_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=192.168.1.50,1433;Database=PayrollDB;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=Server=sql.toncom159.com;Database=Payroll_DB;User Id=Guest;Password=StrongPassword123!;Encrypt=False;TrustServerCertificate=True;
     ports:
       - "5000:8080"
     networks:
