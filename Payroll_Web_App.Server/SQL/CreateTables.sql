@@ -2,23 +2,7 @@
 GO
 
 -- =========================
--- 1. Users Table (AppUser model)
--- =========================
-CREATE TABLE Users (
-    UserId INT IDENTITY(1,1) PRIMARY KEY,
-    EmployeeId INT NULL,                             -- optional link to Employees
-    UserName NVARCHAR(50) NOT NULL UNIQUE,           -- maps to AppUser.UserName
-    PasswordHash VARBINARY(MAX) NOT NULL,            -- byte[] in C#
-    Role NVARCHAR(20) NOT NULL 
-        CHECK (Role IN ('Admin', 'HR', 'Finance', 'Employee')), -- expanded roles
-    IsActive BIT NOT NULL DEFAULT 1,                 -- active flag
-    CreatedAt DATETIME DEFAULT GETDATE(),
-
-    FOREIGN KEY (EmployeeId) REFERENCES Employees(EmployeeId)
-);
-
--- =========================
--- 2. Employees Table
+-- 1. Employees Table
 -- =========================
 CREATE TABLE Employees (
     EmployeeId INT IDENTITY(1,1) PRIMARY KEY,
@@ -35,6 +19,22 @@ CREATE TABLE Employees (
 );
 
 -- =========================
+-- 2. Users Table (AppUser model)
+-- =========================
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY,
+    EmployeeId INT NULL,                              -- optional link to Employees
+    UserName NVARCHAR(50) NOT NULL UNIQUE,           -- maps to AppUser.UserName
+    PasswordHash VARBINARY(MAX) NOT NULL,            -- byte[] in C#
+    Role NVARCHAR(20) NOT NULL 
+        CHECK (Role IN ('Admin', 'HR', 'Finance', 'Employee')),
+    IsActive BIT DEFAULT 1,                           -- active flag
+    CreatedAt DATETIME DEFAULT GETDATE(),
+
+    FOREIGN KEY (EmployeeId) REFERENCES Employees(EmployeeId)
+);
+
+-- =========================
 -- 3. Attendance Table
 -- =========================
 CREATE TABLE Attendance (
@@ -42,7 +42,7 @@ CREATE TABLE Attendance (
     EmployeeId INT NOT NULL,
     WorkDate DATE NOT NULL,
     HoursWorked DECIMAL(5,2) CHECK (HoursWorked >= 0),
-    Status TINYINT DEFAULT 1, -- could represent Present=1, Absent=0, Leave=2
+    Status TINYINT DEFAULT 1, -- Present=1, Absent=0, Leave=2
     Notes NVARCHAR(255),
     CreatedAt DATETIME DEFAULT GETDATE(),
 
