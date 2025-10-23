@@ -1,10 +1,12 @@
-﻿using Payroll_Web_App.Server.Models;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Payroll_Web_App.Server.Models;
 using System.Data;
 
 namespace Payroll_Web_App.Server.Controllers
 {
+    [Authorize] // jwt validation needed
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase

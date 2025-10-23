@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll_Web_App.Server.Models
@@ -6,6 +7,7 @@ namespace Payroll_Web_App.Server.Models
     [Table("Users")] // maps to dbo.Users
     public class AppUser
     {
+        [Key] // tels ef this is the pk
         [Column("UserID")]
         public int UserId { get; set; }
 
