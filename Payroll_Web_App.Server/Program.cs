@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Payroll_Web_App.Server.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Payroll_Web_App.Server.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,6 +69,56 @@ builder.Services
     });
 
 var app = builder.Build();
+
+// Seed Default Users
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        // Only create if table is empty
+        if (!db.Users.Any())
+        {
+            db.Users.AddRange(
+                new AppUser
+                {
+                    UserName = "admin",
+                    Email = "admin@local",
+                    Role = "Admin",
+                    IsActive = true,
+                    PasswordHash = "Admin123!", // replace with hashed password
+                    CreatedAt = DateTime.UtcNow
+                },
+                new AppUser
+                {
+                    UserName = "hruser",
+                    Email = "hr@local",
+                    Role = "HR",
+                    IsActive = true,
+                    PasswordHash = "Hr123!", // replace with hashed password
+                    CreatedAt = DateTime.UtcNow
+                },
+                new AppUser
+                {
+                    UserName = "finuser",
+                    Email = "finance@local",
+                    Role = "Finance",
+                    IsActive = true,
+                    PasswordHash = "Finance123!", // replace with hashed password
+                    CreatedAt = DateTime.UtcNow
+                }
+            );
+
+            db.SaveChanges();
+            Console.WriteLine(" Dev users seeded (Admin, HR, Finance).");
+        }
+        else
+        {
+            Console.WriteLine(" Users already exist — skipping seeding.");
+        }
+    }
+}
 
 // Static file settings 
 app.UseDefaultFiles();

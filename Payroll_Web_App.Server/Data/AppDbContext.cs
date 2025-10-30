@@ -28,5 +28,30 @@ public class AppDbContext : DbContext
             .HasOne<Employee>()
             .WithMany()
             .HasForeignKey(p => p.EmployeeId);
+
+        // Decimal precision fixes
+        b.Entity<Attendance>()
+            .Property(a => a.HoursWorked)
+            .HasPrecision(9, 2); 
+
+        b.Entity<Employee>()
+            .Property(e => e.Salary)
+            .HasPrecision(19, 4); 
+
+        b.Entity<Payroll>()
+            .Property(p => p.BasicPay)
+            .HasPrecision(19, 4);
+
+        b.Entity<Payroll>()
+            .Property(p => p.Bonus)
+            .HasPrecision(19, 4);
+
+        b.Entity<Payroll>()
+            .Property(p => p.Deductions)
+            .HasPrecision(19, 4);
+
+        b.Entity<Payroll>()
+            .Property(p => p.NetPay)
+            .HasPrecision(19, 4);
     }
 }

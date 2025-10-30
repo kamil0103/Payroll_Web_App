@@ -14,5 +14,7 @@ public class Employee
     public string? PhoneNumber { get; set; }
     public DateTime HireDate { get; set; } = DateTime.UtcNow;
     public int DepartmentId { get; set; }
+
+    [Column("BaseSalary")]         
     public decimal Salary { get; set; }
 }
