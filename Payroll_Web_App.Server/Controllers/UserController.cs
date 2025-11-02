@@ -32,7 +32,7 @@ namespace Payroll_Web_App.Server.Controllers
         }
 
 
-        // ===========================
+        // ==========================
         // Admin & HR can list users
         // GET: /users/getusers
         // ==========================
@@ -142,6 +142,7 @@ namespace Payroll_Web_App.Server.Controllers
             return rows > 0
                 ? Ok(new { message = "User added." })
                 : BadRequest(new { message = "Failed to add user." });
+            
         }
     }
 }

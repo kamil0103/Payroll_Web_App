@@ -48,6 +48,7 @@ namespace Payroll_Web_App.Server.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim("EmployeeId", user.EmployeeId?.ToString() ?? ""),
                 new Claim(ClaimTypes.Role, user.Role ?? "Employee"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
