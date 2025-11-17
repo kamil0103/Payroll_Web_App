@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Payroll.Security
+//namespace.Hashing
+namespace Payroll.Hashing
 {
     
     /// Password hashing with PBKDF2 (SHA-256) and versioned format.
@@ -84,4 +85,3 @@ namespace Payroll.Security
       
     }
 }
-
