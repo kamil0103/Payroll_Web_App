@@ -19,11 +19,7 @@ if (!ok)
 else
 {
     // login success
-    // Optionally upgrade the hash if parameters changed:
-    if (PasswordHasher.NeedsRehash(stored))
-    {
-        user.PasswordHash = PasswordHasher.HashPassword(enteredPassword);
-        // save changes to Database
-    }
+   
 }
+
 
