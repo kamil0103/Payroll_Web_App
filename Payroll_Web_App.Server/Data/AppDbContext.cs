@@ -14,40 +14,22 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder b)
     {
-        b.Entity<AppUser>()
-            .HasOne<Employee>()
-            .WithMany()
-            .HasForeignKey(u => u.EmployeeId);
-
-        b.Entity<Attendance>()
-            .HasOne<Employee>()
-            .WithMany()
-            .HasForeignKey(a => a.EmployeeId);
-
-        b.Entity<Payroll>()
-            .HasOne<Employee>()
-            .WithMany()
-            .HasForeignKey(p => p.EmployeeId);
-
-        // Decimal precision fixes
+        // Attendance decimal precision 
         b.Entity<Attendance>()
             .Property(a => a.HoursWorked)
-            .HasPrecision(9, 2); 
+            .HasPrecision(9, 2);
 
-        b.Entity<Employee>()
-            .Property(e => e.Salary)
-            .HasPrecision(19, 4); 
-
+        // Payroll decimal precision 
         b.Entity<Payroll>()
-            .Property(p => p.BasicPay)
+            .Property(p => p.GrossPay)
             .HasPrecision(19, 4);
 
         b.Entity<Payroll>()
-            .Property(p => p.Bonus)
+            .Property(p => p.TaxDeductions)
             .HasPrecision(19, 4);
 
         b.Entity<Payroll>()
-            .Property(p => p.Deductions)
+            .Property(p => p.BenefitsDeductions)
             .HasPrecision(19, 4);
 
         b.Entity<Payroll>()

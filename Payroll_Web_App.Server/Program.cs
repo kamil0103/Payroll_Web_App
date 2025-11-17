@@ -4,18 +4,25 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Payroll_Web_App.Server.Data;
 using Payroll_Web_App.Server.Models;
+using Payroll_Web_App.Server.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<PayrollCalculationService>();
+
 var jwt = builder.Configuration.GetSection("Jwt");
 var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddScoped<IPayrollCalculationService, PayrollCalculationService>();
+builder.Services.AddScoped<PayrollCalculationService>(); 
+
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
+
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payroll Web API", Version = "v1" });
 
