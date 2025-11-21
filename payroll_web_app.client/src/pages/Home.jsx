@@ -1,13 +1,13 @@
 // src/pages/Home.jsx
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import "./Home.css";
 
 export default function Home() {
   return (
     <div className="home-layout">
-      <Header />
+      <header className="home-header">
+        <h1 className="header-title">Payroll Management System</h1>
+      </header>
 
       <main className="home-main">
         <div className="home-container">
@@ -20,7 +20,9 @@ export default function Home() {
         </div>
       </main>
 
-      <Footer />
+      <footer className="home-footer">
+        <p>© 2025 Payroll System. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
