@@ -1,10 +1,26 @@
 /* src/pages/Logout.css */
 
+.logout-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+.logout-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+}
+
 .logout-container {
   max-width: 400px;
-  margin: 6rem auto;
-  padding: 2rem;
   background-color: #ffffff;
+  color: #1e1e2f;
+  padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -18,4 +34,16 @@
 .logout-container p {
   font-size: 1rem;
   color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .logout-main {
+    padding: 2rem 1rem;
+  }
+
+  .logout-container {
+    padding: 1rem;
+    width: 95%;
+  }
 }

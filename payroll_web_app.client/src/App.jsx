@@ -8,6 +8,8 @@ import SignUp from "./pages/SignUp";
 import DashboardEmployer from "./pages/DashboardEmployer";
 import DashboardEmployee from "./pages/DashboardEmployee";
 import Logout from "./pages/Logout";
+import ForgotEmail from "./pages/ForgotEmail";
+import ForgotPassword from "./pages/ForgotPassword";
 import "./App.css";
 
 // Role-based protection
@@ -23,12 +25,16 @@ export default function App() {
       <Routes>
         {/* ✅ Default landing page */}
         <Route path="/" element={<Home />} />
-        <Route index element={<Home />} /> {/* Optional fallback for root */}
+        <Route index element={<Home />} />
 
         {/* 🔐 Auth pages */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/logout" element={<Logout />} />
+
+        {/* 🔁 Recovery pages */}
+        <Route path="/forgot-email" element={<ForgotEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* 🧑‍💼 Employee dashboard */}
         <Route

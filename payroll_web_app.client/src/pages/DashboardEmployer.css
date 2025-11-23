@@ -25,20 +25,7 @@ html, body {
   width: 100%;
 }
 
-/* ✅ Centered header */
-.dashboard-header {
-  background-color: #1e1e2f;
-  color: white;
-  padding: 1rem 2rem;
-  text-align: center;
-}
-
-.header-title {
-  margin: 0;
-  font-size: 1.75rem;
-}
-
-/* ✅ Center main content */
+/* Main content */
 .dashboard-main {
   flex: 1;
   display: flex;
@@ -48,9 +35,10 @@ html, body {
   width: 100%;
 }
 
-/* ✅ Center container and make it a comfortable width */
+/* Container */
 .dashboard-container {
   background-color: #ffffff;
+  color: #1e1e2f;
   padding: 2rem;
   margin: 2rem auto;
   border-radius: 8px;
@@ -81,15 +69,6 @@ html, body {
   border: 1px solid #ddd;
 }
 
-/* Footer */
-.dashboard-footer {
-  background-color: #1e1e2f;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-}
-
 /* 🔄 Responsive */
 @media (max-width: 768px) {
   .dashboard-main {
@@ -100,14 +79,5 @@ html, body {
     padding: 1rem;
     margin: 1rem auto;
     width: 95%;
-  }
-
-  .header-title {
-    font-size: 1.5rem;
-    text-align: center;
-  }
-
-  .dashboard-header {
-    text-align: center;
   }
 }
