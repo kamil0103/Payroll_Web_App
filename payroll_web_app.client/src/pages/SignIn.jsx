@@ -6,6 +6,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./SignIn.css";
 
+// ✅ Import Font Awesome CSS (make sure you installed it with npm)
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 export default function SignIn() {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -46,11 +49,16 @@ export default function SignIn() {
               required
             />
 
+            {/* ✅ Forgot links with icons */}
             <div className="forgot-links">
-              <span className="forgot-dot">•</span>
-              <Link to="/forgot-email" className="forgot-link">Forgot Email</Link>
-              <span className="forgot-dot">•</span>
-              <Link to="/forgot-password" className="forgot-link">Forgot Password</Link>
+              <div className="forgot-item">
+                <i className="fas fa-envelope forgot-icon"></i>
+                <Link to="/forgot-email" className="forgot-link">Forgot Email</Link>
+              </div>
+              <div className="forgot-item">
+                <i className="fas fa-key forgot-icon"></i>
+                <Link to="/forgot-password" className="forgot-link">Forgot Password</Link>
+              </div>
             </div>
 
             <div className="role-select">
@@ -85,4 +93,3 @@ export default function SignIn() {
     </div>
   );
 }
-
