@@ -6,6 +6,7 @@ using Payroll_Web_App.Server.Models;
 using Payroll_Web_App.Server.Services;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace Payroll_Web_App.Server.Controllers
 {
@@ -267,10 +268,17 @@ namespace Payroll_Web_App.Server.Controllers
             html.Append("<div class='box'><table>");
             html.Append("<tr><th>Pay Period</th><td class='right'>" + $"{payroll.PayPeriodStart:yyyy-MM-dd} → {payroll.PayPeriodEnd:yyyy-MM-dd}" + "</td></tr>");
             html.Append("<tr><th>Total Hours</th><td class='right'>" + System.Net.WebUtility.HtmlEncode(totalHours.ToString("0.##")) + "</td></tr>");
-            html.Append("<tr><th>Gross Pay</th><td class='right'>" + payroll.GrossPay.ToString("en-US") + "</td></tr>");
-            html.Append("<tr><th>Tax</th><td class='right'>-" + payroll.TaxDeductions.ToString("en-US") + "</td></tr>");
-            html.Append("<tr><th>Benefits</th><td class='right'>-" + payroll.BenefitsDeductions.ToString("en-US") + "</td></tr>");
-            html.Append("<tr><th><strong>Net Pay</strong></th><td class='right'><strong>" + payroll.NetPay.ToString("en-US") + "</strong></td></tr>");
+            html.Append("<tr><th>Gross Pay</th><td class='right'>" 
+                + payroll.GrossPay.ToString("C", new CultureInfo("en-US")) + "</td></tr>");
+            
+            html.Append("<tr><th>Tax</th><td class='right'>-" 
+                + payroll.TaxDeductions.ToString("C", new CultureInfo("en-US")) + "</td></tr>");
+            
+            html.Append("<tr><th>Benefits</th><td class='right'>-" 
+                + payroll.BenefitsDeductions.ToString("C", new CultureInfo("en-US")) + "</td></tr>");
+            
+            html.Append("<tr><th><strong>Net Pay</strong></th><td class='right'><strong>" 
+                + payroll.NetPay.ToString("C", new CultureInfo("en-US")) + "</strong></td></tr>");
             html.Append("</table></div>");
 
             html.Append("</body></html>");
