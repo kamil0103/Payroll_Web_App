@@ -4,6 +4,7 @@ import { getEmployees } from "../services/api";
 import EmployeeForm from "../components/EmployeeForm";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Payslip from "../components/Payslip";   // ✅ import payslip
 import "./DashboardEmployer.css";
 
 export default function DashboardEmployer() {
@@ -33,6 +34,9 @@ export default function DashboardEmployer() {
             {employees.map((emp) => (
               <li key={emp.id} className="employee-item">
                 {emp.name} – {emp.department} – ${emp.salary}
+
+                {/* ✅ Render payslip for each employee */}
+                <Payslip employee={emp} />
               </li>
             ))}
           </ul>
