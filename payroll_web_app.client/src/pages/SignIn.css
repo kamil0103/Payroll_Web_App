@@ -75,22 +75,28 @@ button[type="submit"]:hover {
 .forgot-links {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* align left for icon + text */
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   font-size: 0.9rem;
   color: #555;
 }
 
-.forgot-dot {
+.forgot-item {
+  display: flex;
+  align-items: center;
+  margin: 0.25rem 0;
+}
+
+.forgot-icon {
   font-size: 1.2rem;
-  color: #999;
+  color: #1e1e2f;
+  margin-right: 0.5rem;
 }
 
 .forgot-link {
   color: #646cff;
   text-decoration: none;
-  margin: 0.25rem 0;
 }
 
 .forgot-link:hover {
