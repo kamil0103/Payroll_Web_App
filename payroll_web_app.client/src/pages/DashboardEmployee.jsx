@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Payslip from "../components/Payslip";   // ✅ import the payslip component
 import "./DashboardEmployee.css";
 
 export default function DashboardEmployee() {
@@ -23,6 +24,14 @@ export default function DashboardEmployee() {
 
     fetchPayroll();
   }, []);
+
+  // Example employee data for payslip
+  const employee = {
+    id: "EMP001",
+    name: "Jane Doe",
+    salary: 3200,
+    deductions: 200,
+  };
 
   return (
     <div className="employee-dashboard">
@@ -49,6 +58,9 @@ export default function DashboardEmployee() {
               ))}
             </tbody>
           </table>
+
+          {/* ✅ Show payslip below the table */}
+          <Payslip employee={employee} />
         </div>
       </main>
 
@@ -56,4 +68,3 @@ export default function DashboardEmployee() {
     </div>
   );
 }
-
