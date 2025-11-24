@@ -1,30 +1,53 @@
 /* src/components/Header.css */
-
 .shared-header {
   background-color: #1e1e2f;
   color: white;
-  padding: 1rem 2rem;
-  text-align: center;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;       /* center title */
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.header-left {
+  position: absolute;
+  left: 1rem;
 }
 
 .header-title {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
-.header-nav {
-  margin-top: 0.5rem;
+.header-right {
+  position: absolute;
+  right: 1rem;
 }
 
-.nav-link {
-  background-color: #33334d;
-  color: white;
-  padding: 0.5rem 1rem;
+/* ✅ Search bar with icon */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-search {
+  padding: 0.4rem 0.75rem;
+  padding-right: 2rem;           /* space for icon */
   border-radius: 4px;
-  text-decoration: none;
+  border: none;
   font-size: 0.9rem;
+  outline: none;
 }
 
-.nav-link:hover {
-  background-color: #4a4a6a;
+.search-icon {
+  position: absolute;
+  right: 0.5rem;
+  color: #666;
+  pointer-events: none;          /* icon doesn’t block typing */
 }
