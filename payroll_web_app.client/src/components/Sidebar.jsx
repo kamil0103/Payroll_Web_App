@@ -21,8 +21,12 @@ export default function Sidebar() {
         </button>
 
         <h3>Navigation</h3>
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/logout" className="nav-link">Logout</Link>
+        <Link to="/" className="nav-link">
+          <i className="fas fa-home"></i> Home
+        </Link>
+        <Link to="/logout" className="nav-link">
+          <i className="fas fa-sign-out-alt"></i> Logout
+        </Link>
       </div>
 
       {/* Overlay to close sidebar */}
