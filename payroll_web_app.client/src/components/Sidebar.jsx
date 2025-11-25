@@ -17,7 +17,7 @@ export default function Sidebar() {
       <div className={`sidebar ${open ? "open" : ""}`}>
         {/* Close button inside sidebar */}
         <button className="sidebar-close" onClick={() => setOpen(false)}>
-          <i className="fas fa-arrow-left"></i> {/* arrow icon instead of X */}
+          <i className="fas fa-arrow-left"></i>
         </button>
 
         <h3>Navigation</h3>
