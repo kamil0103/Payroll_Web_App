@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Payroll_Web_App.Server.Data;
 using Payroll_Web_App.Server.Models;
+using Payroll_Web_App.Server.Security;
 using System.Data;
 
 namespace Payroll_Web_App.Server.Controllers
@@ -12,10 +14,13 @@ namespace Payroll_Web_App.Server.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _db;
 
-        public UsersController(IConfiguration configuration)
+
+        public UsersController(IConfiguration configuration, AppDbContext db)
         {
             _configuration = configuration;
+            _db = db;
         }
 
         // ====================================================================
@@ -60,7 +65,7 @@ namespace Payroll_Web_App.Server.Controllers
                     UserId = reader["UserID"] is int i ? i : Convert.ToInt32(reader["UserID"]),
                     EmployeeId = reader["EmployeeId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["EmployeeId"]),
                     UserName = reader["Username"]?.ToString() ?? string.Empty,
-                    PasswordHash = reader["PasswordHash"]?.ToString() ?? string.Empty, // replace with Hash
+                    PasswordHash = "***HIDDEN***",
                     Role = reader["Role"]?.ToString() ?? "Employee",
                     Email = reader["Email"] == DBNull.Value ? null : reader["Email"]!.ToString(),
                     IsActive = reader["IsActive"] != DBNull.Value && Convert.ToBoolean(reader["IsActive"]),
@@ -84,26 +89,44 @@ namespace Payroll_Web_App.Server.Controllers
                 return BadRequest(new { message = "UserId is required." });
 
             var cs = _configuration.GetConnectionString("DefaultConnection");
+
             using var connection = new SqlConnection(cs);
             connection.Open();
 
-            
+            // Hash password only if user provided a new one
+            string? hashedPassword = null;
+            if (!string.IsNullOrWhiteSpace(dto.PasswordHash))
+            {
+                hashedPassword = PasswordHasher.HashPassword(dto.PasswordHash);
+            }
+
             using var cmd = new SqlCommand(@"
-                UPDATE dbo.Users
-                   SET Username = @username,
-                       Role     = @role,
-                       IsActive = @isActive
-                 WHERE UserID   = @id;", connection);
+        UPDATE dbo.Users
+           SET Username     = @username,
+               Role         = @role,
+               IsActive     = @isActive,
+               PasswordHash = COALESCE(@passwordHash, PasswordHash)
+         WHERE UserID       = @id;", connection);
 
             cmd.Parameters.AddWithValue("@id", dto.UserId);
-            cmd.Parameters.AddWithValue("@username", (object?)dto.UserName ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@role", (object?)dto.Role ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@username",
+                string.IsNullOrWhiteSpace(dto.UserName) ? (object)DBNull.Value : dto.UserName);
+
+            cmd.Parameters.AddWithValue("@role",
+                string.IsNullOrWhiteSpace(dto.Role) ? (object)DBNull.Value : dto.Role);
+
             cmd.Parameters.AddWithValue("@isActive", dto.IsActive);
 
-            var rows = cmd.ExecuteNonQuery();
-            return rows > 0
-                ? Ok(new { message = "User updated." })
-                : NotFound(new { message = "User not found." });
+            // If null → keep old password (COALESCE handles this)
+            cmd.Parameters.AddWithValue("@passwordHash",
+                (object?)hashedPassword ?? DBNull.Value);
+
+            int rows = cmd.ExecuteNonQuery();
+
+            if (rows > 0)
+                return Ok(new { message = "User updated." });
+
+            return NotFound(new { message = "User not found." });
         }
 
         // =========================
@@ -116,10 +139,13 @@ namespace Payroll_Web_App.Server.Controllers
             if (string.IsNullOrWhiteSpace(newUser.UserName))
                 return BadRequest(new { message = "UserName is required." });
 
-            // For now, we’re storing the plain string in PasswordHash (until hashing is added)
-            var password = string.IsNullOrWhiteSpace(newUser.PasswordHash)
-                ? "ChangeMe123!"  // sensible default in dev
-                : newUser.PasswordHash;
+            string rawPassword =
+               string.IsNullOrWhiteSpace(newUser.PasswordHash)
+               ? "ChangeMe123!"   // fallback default password
+               : newUser.PasswordHash;
+
+            // Hashing the password
+            string hashedPassword = PasswordHasher.HashPassword(rawPassword);
 
             var cs = _configuration.GetConnectionString("DefaultConnection");
             using var connection = new SqlConnection(cs);
@@ -133,7 +159,7 @@ namespace Payroll_Web_App.Server.Controllers
 
             cmd.Parameters.AddWithValue("@employeeId", (object?)newUser.EmployeeId ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@username", newUser.UserName);
-            cmd.Parameters.AddWithValue("@passwordHash", password); // add hash 
+            cmd.Parameters.AddWithValue("@passwordHash", hashedPassword);
             cmd.Parameters.AddWithValue("@role", (object?)newUser.Role ?? "Employee");
             cmd.Parameters.AddWithValue("@email", (object?)newUser.Email ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@isActive", newUser.IsActive);
@@ -144,5 +170,22 @@ namespace Payroll_Web_App.Server.Controllers
                 : BadRequest(new { message = "Failed to add user." });
             
         }
+        // ===============================================================
+        // Check if email exists
+        // GET: /users/emailexists?email=someone@example.com
+        // ===============================================================
+        [AllowAnonymous]
+        [HttpGet("emailexists")]
+        public IActionResult EmailExists([FromQuery] string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return BadRequest(new { message = "Email is required." });
+
+            bool exists = _db.Users.Any(u => u.Email == email);
+
+            return Ok(new { exists });
+        }
+
+
     }
 }

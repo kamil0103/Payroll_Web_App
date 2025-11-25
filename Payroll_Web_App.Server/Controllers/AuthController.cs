@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Payroll_Web_App.Server.Data;
 using Payroll_Web_App.Server.Models;
+using Payroll_Web_App.Server.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -30,11 +31,13 @@ namespace Payroll_Web_App.Server.Controllers
         public IActionResult Login([FromBody] LoginRequest req)
         {
             // find user in database
-            // needs hashed passwords
-            var user = _db.Users
-                .FirstOrDefault(u => u.UserName == req.UserName && u.PasswordHash == req.Password);
+            var user = _db.Users.FirstOrDefault(u => u.UserName == req.UserName);
             // reject for missing account
             if (user is null || !user.IsActive)
+                return Unauthorized(new { message = "Invalid credentials" });
+            bool passwordOk = PasswordHasher.Verify(req.Password, user.PasswordHash);
+
+            if (!passwordOk)
                 return Unauthorized(new { message = "Invalid credentials" });
 
             var jwt = _config.GetSection("Jwt");

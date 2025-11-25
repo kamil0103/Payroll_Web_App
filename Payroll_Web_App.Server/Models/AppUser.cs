@@ -18,7 +18,7 @@ namespace Payroll_Web_App.Server.Models
         public string UserName { get; set; } = string.Empty;
 
         [Column("PasswordHash")]
-        public string PasswordHash { get; set; } = string.Empty; // changed from byte[] to string
+        public string? PasswordHash { get; set; }
 
         [Column("Role")]
         public string Role { get; set; } = "Employee";
