@@ -8,13 +8,18 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Toggle button */}
-      <button className="sidebar-toggle" onClick={() => setOpen(!open)}>
+      {/* Toggle button (hamburger) */}
+      <button className="sidebar-toggle" onClick={() => setOpen(true)}>
         <i className="fas fa-bars"></i>
       </button>
 
       {/* Sidebar drawer */}
       <div className={`sidebar ${open ? "open" : ""}`}>
+        {/* Close button inside sidebar */}
+        <button className="sidebar-close" onClick={() => setOpen(false)}>
+          <i className="fas fa-arrow-left"></i> {/* arrow icon instead of X */}
+        </button>
+
         <h3>Navigation</h3>
         <Link to="/" className="nav-link">Home</Link>
         <Link to="/logout" className="nav-link">Logout</Link>
