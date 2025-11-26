@@ -135,7 +135,7 @@
     </div>
 
     <script>
-        // --- Mock data (can fetch data from ) ---
+        //  Mock data (can fetch data from API) 
         const summaryData = {
             employees: {
                 current: 120,
@@ -147,13 +147,13 @@
             }
         };
 
-        // --- Helper: percent change ---
+        //  function for percent change
         function calcPercentChange(current, previous) {
             if (previous === 0) return 0;
             return ((current - previous) / previous) * 100;
         }
 
-        // --- Populate employee card with mock trend data
+        // Populate employee card with mock trend data
         (function updateEmployeeCard() {
             const { current, previous } = summaryData.employees;
             const empCountEl = document.getElementById("empCount");
@@ -183,7 +183,7 @@
             }
         })();
 
-        // --- Populate card with mock data
+        // Populate card with mock data
         (function updateExpenseCard() {
             const values = summaryData.expenses.values;
             const labels = summaryData.expenses.labels;
@@ -274,3 +274,4 @@
     </script>
 </body>
 </html>
+
