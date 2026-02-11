@@ -30,6 +30,9 @@ namespace Payroll_Web_App.Server.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest req)
         {
+            if (req is null || string.IsNullOrWhiteSpace(req.UserName) || string.IsNullOrWhiteSpace(req.Password))
+                return BadRequest(new { message = "UserName and Password are required." });
+
             // find user in database
             var user = _db.Users.FirstOrDefault(u => u.UserName == req.UserName);
             // reject for missing account

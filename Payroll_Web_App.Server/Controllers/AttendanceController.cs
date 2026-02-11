@@ -172,7 +172,52 @@ namespace Payroll_Web_App.Server.Controllers
         // ===============================================
         [HttpGet("mine/{employeeId:int}")]
         public IActionResult Mine(int employeeId, [FromQuery] DateTime? from = null, [FromQuery] DateTime? to = null)
-            => ByEmployee(employeeId, from, to);
+        {
+            var isPrivileged = User.IsInRole("Admin") || User.IsInRole("HR");
+            if (!isPrivileged)
+            {
+                var claimEmployeeId = User.FindFirst("EmployeeId")?.Value;
+                if (!int.TryParse(claimEmployeeId, out var authenticatedEmployeeId))
+                    return Forbid();
+
+                if (authenticatedEmployeeId != employeeId)
+                    return Forbid();
+            }
+
+            var cs = _config.GetConnectionString("DefaultConnection");
+            using var con = new SqlConnection(cs);
+            con.Open();
+
+            var sql = @"
+                SELECT AttendanceID, EmployeeID, [Date], HoursWorked, [Status], CreatedAt
+                FROM dbo.Attendance
+                WHERE EmployeeID = @empId";
+            if (from.HasValue) sql += " AND [Date] >= @from";
+            if (to.HasValue) sql += " AND [Date] <  @to";
+            sql += " ORDER BY [Date] DESC, AttendanceID DESC;";
+
+            using var cmd = new SqlCommand(sql, con);
+            cmd.Parameters.Add("@empId", SqlDbType.Int).Value = employeeId;
+            if (from.HasValue) cmd.Parameters.Add("@from", SqlDbType.Date).Value = from.Value.Date;
+            if (to.HasValue) cmd.Parameters.Add("@to", SqlDbType.Date).Value = to.Value.Date;
+
+            var list = new List<object>();
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                list.Add(new
+                {
+                    attendanceId = Convert.ToInt32(r["AttendanceID"]),
+                    employeeId = Convert.ToInt32(r["EmployeeID"]),
+                    date = Convert.ToDateTime(r["Date"]).Date,
+                    hoursWorked = r["HoursWorked"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(r["HoursWorked"]),
+                    status = r["Status"] == DBNull.Value ? null : r["Status"]!.ToString(),
+                    createdAt = Convert.ToDateTime(r["CreatedAt"])
+                });
+            }
+
+            return Ok(list);
+        }
     }
 
     // Helpers (inline for now but can be brought out)

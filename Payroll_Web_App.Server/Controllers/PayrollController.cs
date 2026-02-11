@@ -90,6 +90,10 @@ namespace Payroll_Web_App.Server.Controllers
                 .Include(p => p.Employee)
                 .FirstOrDefaultAsync(p => p.PayrollId == payroll.PayrollId);
 
+            if (payrollWithEmployee == null)
+                return StatusCode(500,
+                    new { message = "Payroll was created but could not be loaded." });
+
             // return the full payroll (includes Employee when available) and the computed total hours 
             return Ok(new
             {
@@ -181,6 +185,14 @@ namespace Payroll_Web_App.Server.Controllers
 
             if (payroll == null) return NotFound(new { message = "Payroll record not found." });
 
+            var isPrivileged = User.IsInRole("Admin") || User.IsInRole("HR") || User.IsInRole("Finance");
+            if (!isPrivileged)
+            {
+                var claimEmployeeId = User.FindFirst("EmployeeId")?.Value;
+                if (!int.TryParse(claimEmployeeId, out var authenticatedEmployeeId) || authenticatedEmployeeId != payroll.EmployeeId)
+                    return Forbid();
+            }
+
             // If Employee navigation isn't available, load explicitly
             if (payroll.Employee == null)
             {
@@ -232,6 +244,14 @@ namespace Payroll_Web_App.Server.Controllers
                 .FirstOrDefaultAsync(p => p.PayrollId == id);
 
             if (payroll == null) return NotFound("Payroll not found.");
+
+            var isPrivileged = User.IsInRole("Admin") || User.IsInRole("HR") || User.IsInRole("Finance");
+            if (!isPrivileged)
+            {
+                var claimEmployeeId = User.FindFirst("EmployeeId")?.Value;
+                if (!int.TryParse(claimEmployeeId, out var authenticatedEmployeeId) || authenticatedEmployeeId != payroll.EmployeeId)
+                    return Forbid();
+            }
 
             if (payroll.Employee == null)
             {
